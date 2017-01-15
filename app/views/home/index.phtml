@@ -1,0 +1,120 @@
+<div class="row">
+	<h2>Отзывы пользователей</h2>
+</div>
+
+
+<?php if (!isset ($_SESSION['user'])) { ?>
+	<p class="text-left">Зарегистрируйтесь, если хотите оставлять свои отзывы</p>
+
+<?php } else {?>
+	
+		<div id="myform">
+			<form action="" method="post" id="form1">
+				<table>
+					<tr>
+						<td><b>Имя*: </b></td>
+						<td><div id="nameCom"><input type="text" name="nameComment" value="<?php echo $_SESSION['user']['login']?>"></div></td>
+					</tr>
+					<tr>
+						<td><b>Email*: </b></td>
+						<td><div id="emailCom"><input type="text" name="emailComment" value="<?php echo $_SESSION['user']['email']?>"></div></td>
+					</tr>
+					<tr>
+						<td><b>Отзыв*:</b></td>
+						<td><div id="textCom"><textarea rows="3" cols="35" name="textComment"></textarea></div></td>
+					</tr>
+				</table>
+				<div align="left"><input type="submit" value="Отправить" id="submit"></div>
+			</form>
+		</div>
+	
+	<?php }?>
+
+<?php foreach ($data[2] as $v) {?>
+	<div class="entry" id="el" style="padding-bottom: 10px; ">
+		<p >
+			<b><?php echo $v['name'];?></b>&nbsp;<?php echo $v['email'];?>				
+		</p>
+		<p class="text-justify"><?php echo $v['text'];?></p>				 			
+		<p class="comment"><?php echo date('n/d/Y , H:i:s A', strtotime($v['date']));?></p>			  		
+	</div>
+<?php }?>
+	
+
+<script>
+	
+	$(document).ready(function() {
+		var name,comment,email;
+		$("#myform").on('submit', function(event) {
+			
+			name=$('input[name=nameComment]').val();
+			comment=$('textarea[name=textComment]').val();
+			email=$('input[name=emailComment]').val();
+			
+
+			event.preventDefault();
+			
+			$.ajax({
+				url     : "/app/models/ajax.php",
+				type    :  "POST",
+				cache   : false,
+				timeout : 10000,
+				data    : {
+					"name"    : $("input[name='nameComment']").val(),
+					"comment" : $("textarea[name='textComment']").val(),
+					"email"	  : $("input[name='emailComment']").val(),
+						
+			},
+			success : function(msg){
+				
+				if (name.length == 0) {
+					if (!$("b").is("#comN")) {
+						$("<b id='comN'>").html(" Введите имя").appendTo("#nameCom");
+					}				
+				} else {
+					$("b#comN").remove();
+				}
+
+				if (comment.length == 0) {
+					if (!$("b").is("#comT")) {
+						$("<b id='comT'>").html(" Введите комментарий").appendTo("#textCom");
+					}				
+				} else {
+					$("b#comT").remove();
+				}
+
+				if (email.length == 0) {
+					if (!$("b").is("#comE")) {
+						$("<b id='comE'>").html(" Введите email").appendTo("#emailCom");
+					}				
+				} else {
+					$("b#comE").remove();
+				}
+				
+				if (name.length!=0 && comment.length!=0 && email.length!=0) {
+					if ($("b").is("#comN")){
+						$("b#comN").remove();
+					}
+					if ($("b").is("#comT")){
+						$("b#comT").remove();
+					}
+					if ($("b").is("#comE")){
+						$("b#comE").remove();
+					}
+					//$("b#comN").html("").appendTo("#nameCom");
+					var d = new Date().toLocaleString();
+					var result = JSON.parse(msg);
+					
+					$("<div style='padding-bottom: 10px;'>")
+					.addClass("entry")
+					.html("<p ><b>"+result["name"]+"</b>&nbsp;"+result["email"]+"</p><p>"+result["comment"]+"</p><p class='comment'>"+d+"</p>")
+					.prependTo("#el");	
+				}
+				
+			}
+			
+			});
+		});
+	});
+	
+</script>

@@ -1,0 +1,170 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    
+    <link rel="icon" href="/public/favicon.ico">
+
+    <title>Отзывы</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/app/views/bootstrap/css/bootstrap.min.css" rel="stylesheet">    
+    
+    <link href="/app/views/css/styles.css" rel="stylesheet">
+
+       
+   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="./bootstrap/docs/assets/js/vendor/jquery.min.js"><\/script>')</script>
+    
+    <script src="/app/views/bootstrap/js/bootstrap.min.js"></script>
+    
+    
+    <style>
+
+      .navbar-brand,
+      .navbar-nav>li>a {
+        height: 50px;
+        line-height: 50px;
+        padding-top: 0;
+      }
+      nav a {
+        color:white !important;
+      }      
+
+    </style>
+  </head>
+
+  <body>
+    
+    <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: rgba(0, 102, 34, 0.9);" >
+      <div class="container" >
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/public/home/" style="color:white !important;">Our Company</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse" style="height:40px !important;">
+          <ul class="nav navbar-nav" >
+          
+          	
+            <li class=""><a href="/public/home/">Отзывы</a></li>
+
+            <li style="padding-left: 20px;">
+              <?php if (isset($_SESSION['user'])) {?>
+                <a href="/public/home/auth&act=user_exit">Выход</a>
+              
+              <?php } else {?>
+                  
+                      <p style="padding-top: 14px; color:white;"><a href="#popup1">Авторизация</a>/<a href="#popup2">Регистрация</a></p>
+                
+              <?php }?>
+            </li>
+                   
+          </ul>
+        </div>
+        
+      </div>
+    </nav>
+	
+	<div class="main-all">
+	
+	    <div class="container" style="padding-top: 60px;">
+        
+
+        <div id="popup1" class="overlay">
+          <div class="popup">
+            <div style="text-align: center; border-bottom: 1px solid rgba(0, 102, 34, 0.5); margin-bottom: 10px; "><h2 style="color: rgba(0, 102, 34, 0.9);">Авторизация</h2></div>
+            <a class="close" href="#close">X</a>
+            <div class="content ">
+                <form action="" method="post">
+                    <div class="row"><?php echo $data['errorLogin'];?></div>
+                    <div class="row" >
+
+                        <div class="col-md-4">
+                            <label for="userEmail">Email </label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="emailLogin" id="userEmail" value="">
+                        </div>
+                    </div>
+                    <div class="row" >
+                        <div class="col-md-4">
+                           <label for="userPassw">Пароль </label>  
+                        </div>
+                        <div class="col-md-6">
+                            <input type="password" name="passwordLogin" id="userPassw" value="">
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 10px;">
+                        <input type="submit" value="Отправить">
+                    </div>                          
+                    
+                </form> 
+            </div>
+          </div>
+        </div>
+
+
+        <div id="popup2" class="overlay">
+          <div class="popup">
+            <div style="text-align: center; border-bottom: 1px solid rgba(0, 102, 34, 0.5); margin-bottom: 10px; "><h2 style="color: rgba(0, 102, 34, 0.9);">Регистрация</h2></div>
+            <a class="close" href="#close">X</a>
+            <div class="content ">
+                <?php if (isset($_SESSION['regok'])) {
+                      unset($_SESSION['regok']);?>
+                      <div>
+                          На ваш e-mail отправлена ссылка для подтверждения регистрации!
+                      </div>
+                <?php }?>
+                <form action="" method="post">
+                    <div class="row" >
+                        <div class="col-md-4">
+                            <label for="userNameReg">Имя </label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="login" id="userNameReg" value="<?php echo $data['login'];?>">
+                            <div><?php echo $data['er_login'];?></div>
+                        </div>
+                    </div>
+                    <div class="row" >
+                        <div class="col-md-4">
+                            <label for="userEmailReg">Email </label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="email" id="userEmailReg" value="<?php echo $data['email'];?>">
+                            <div><?php echo $data['er_email'];?></div>
+                        </div>
+                    </div>
+                    <div class="row" >
+                        <div class="col-md-4">
+                            <label for="userAgeReg">Возраст </label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="age" id="userAgeReg" value="<?php echo $data['age'];?>">
+                        </div>
+                    </div>
+                    <div class="row" >
+                        <div class="col-md-4">
+                           <label for="userPasswReg">Пароль </label>  
+                        </div>
+                        <div class="col-md-6">
+                            <input type="password" name="password" id="userPasswReg" value="<?php echo $data['password']; ?>">
+                            <div><?php echo $data['er_password']; ?></div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 10px;">
+                        <input type="submit" value="Отправить">
+                    </div>                          
+                    
+                </form> 
+            </div>
+          </div>
+        </div>
